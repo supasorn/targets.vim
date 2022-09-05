@@ -66,6 +66,7 @@ function! targets#e(mapmode, modifier, original)
         let which = 'c'
         let trigger = pending
         let typed = a:original . pending
+        let typed_with_n = a:original . "n" . pending
         break
     endwhile
 
@@ -77,6 +78,10 @@ function! targets#e(mapmode, modifier, original)
     let typed = substitute(typed, "'", "''", "g")
 
     let s:call = "call targets#" . a:mapmode . "('" . trigger . which . a:modifier . "', '" . typed . "', " . v:count1 . ")"
+
+    if exists('typed_with_n') 
+      let @r = 'c'.typed_with_n
+    endif
     " indirectly (but silently) call targets#do below
     return "@(targets)"
 endfunction
